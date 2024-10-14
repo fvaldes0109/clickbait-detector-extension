@@ -15,13 +15,13 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
 
         if (response && response.h1Texts.length > 0) {
           // Send the extracted h1's to a dummy API
-          fetch("https://jsonplaceholder.typicode.com/posts", {
+          fetch("http://localhost:8000/page-content", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              h1Texts: response.h1Texts, // Sending the array of h1 texts
+              titles: response.h1Texts, // Sending the array of h1 texts
             }),
           })
             .then((res) => res.json())
