@@ -1,0 +1,11 @@
+{
+    "manifest_version": 3,
+    "name": "H1 Reader",
+    "version": "1.0",
+    "description": "Reads and displays all h1 tags on the current page.",
+    "permissions": ["activeTab", "scripting"],
+    "action": {
+        "default_popup": "popup.html"
+    }
+}
+  
