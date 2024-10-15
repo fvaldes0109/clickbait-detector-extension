@@ -21,7 +21,8 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              titles: response.h1Texts, // Sending the array of h1 texts
+              titles: response.h1Texts,
+              text: response.text,
             }),
           })
             .then((res) => res.json())

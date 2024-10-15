@@ -18,11 +18,13 @@ app.add_middleware(
 # Define the request body model
 class TitlesRequest(BaseModel):
     titles: List[str]
+    text: str
 
 @app.post("/page-content")
 async def get_page_content(request: TitlesRequest):
-    # Access the titles list from the request body
+    # Access the titles list and text from the request body
     titles = request.titles
+    text = request.text
     # Process the titles (for now, we will just return a random float representing confidence)
     confidence = np.random.rand()
     # Return the confidence value
