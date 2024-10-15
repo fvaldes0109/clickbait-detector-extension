@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
+import numpy as np
 
 app = FastAPI()
 
@@ -22,8 +23,10 @@ class TitlesRequest(BaseModel):
 async def get_page_content(request: TitlesRequest):
     # Access the titles list from the request body
     titles = request.titles
-    # Process the titles (for now, we will just return them as-is)
-    return {"received_titles": titles}
+    # Process the titles (for now, we will just return a random float representing confidence)
+    confidence = np.random.rand()
+    # Return the confidence value
+    return {"confidence": confidence}
 
 # To run the app, use uvicorn
 # if __name__ == "__main__":

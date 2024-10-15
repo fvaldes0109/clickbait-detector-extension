@@ -10,8 +10,8 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     },
     () => {
       // After injecting the content script, send a message to retrieve H1 elements
-      chrome.tabs.sendMessage(tabId, { message: "getH1s" }, (response) => {
-        const h1List = document.getElementById("h1-list");
+      chrome.tabs.sendMessage(tabId, { message: "sendContent" }, (response) => {
+        const resultElement = document.getElementById("result-element");
 
         if (response && response.h1Texts.length > 0) {
           // Send the extracted h1's to a dummy API
@@ -27,14 +27,15 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
             .then((res) => res.json())
             .then((data) => {
               // Display the response from the API in the popup
-              h1List.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+              const confidence = data.confidence;
+              resultElement.innerHTML = `<h2>${(parseFloat(confidence) * 100).toFixed(2)}%</h2>`;
             })
             .catch((error) => {
-              h1List.textContent = "Error sending data to the API.";
+              resultElement.textContent = "Error sending data to the API.";
               console.error("Error:", error);
             });
         } else {
-          h1List.textContent = "No H1 tags found.";
+          resultElement.textContent = "No H1 tags found.";
         }
       });
     }
