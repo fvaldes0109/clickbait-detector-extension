@@ -14,3 +14,8 @@ typing_extensions==4.12.2
 uvicorn==0.31.1
 openai==1.52.2
 python-dotenv==1.0.1
+transformers==4.46.0
+torch==2.5.0
+peft==0.13.2
+trl==0.11.4
+bitsandbytes==0.44.1

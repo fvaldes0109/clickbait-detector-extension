@@ -1,9 +1,11 @@
-from fastapi import FastAPI
+from ast import List
+from fastapi import FastAPI, Body
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import numpy as np
 from openai import AsyncOpenAI
 from dotenv import load_dotenv
+from transformers import pipeline
 
 # Load the environment variables
 load_dotenv()
@@ -40,10 +42,35 @@ Page Content:
 {text}
 """
 
+classification_pipeline = pipeline(
+    "text-classification",
+    model="jorgeajimenezl/llama-3.2-1b-it-clickbait-detector",
+    device="cpu",
+)
+
 
 class PageInformation(BaseModel):
     title: str
     text: str
+
+
+class ProbabilityOutput(BaseModel):
+    probability: float
+
+
+@app.get("/prob-by-title")
+async def compute_prob_by_title(
+    title: List[str] = Body(...),
+) -> List[ProbabilityOutput]:
+    result = classification_pipeline(title)
+    ret = []
+
+    for res in result:
+        score = res["score"]
+        if res["label"] == "LABEL_0":
+            score = 1 - score
+        ret.append(ProbabilityOutput(probability=score))
+    return ret
 
 
 @app.post("/prob-by-page")
@@ -71,7 +98,7 @@ async def compute_prob_by_page(request: PageInformation):
         prob = np.exp(logprob.logprob)
         avg += prob * float(logprob.token)
 
-    return {"probability": np.round(avg, 2) / 9}
+    return ProbabilityOutput(probability=np.round(avg, 2) / 9)
 
 
 # To run the app, use uvicorn
