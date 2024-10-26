@@ -1,11 +1,13 @@
 {
     "manifest_version": 3,
-    "name": "H1 Reader",
+    "name": "Clickbait Detector",
     "version": "1.0",
-    "description": "Reads and displays all h1 tags on the current page.",
-    "permissions": ["activeTab", "scripting"],
+    "description": "Predicts if a news article is clickbait or not.",
+    "permissions": ["activeTab", "scripting", "contextMenus"],
     "action": {
         "default_popup": "popup.html"
+    },
+    "background": {
+        "service_worker": "background.js"
     }
 }
-  

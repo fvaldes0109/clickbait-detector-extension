@@ -15,7 +15,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
 
         if (response && response.h1Texts.length > 0) {
           // Send the extracted h1's to a dummy API
-          fetch("http://localhost:8000/page-content", {
+          fetch("http://localhost:8000/prob-by-page", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -28,7 +28,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
             .then((res) => res.json())
             .then((data) => {
               // Display the response from the API in the popup
-              const confidence = data.confidence;
+              const confidence = data.probability;
               resultElement.innerHTML = `<h2>${(parseFloat(confidence) * 100).toFixed(2)}%</h2>`;
             })
             .catch((error) => {
